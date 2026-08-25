@@ -1,0 +1,4 @@
+# Optional: install with `pip install -r requirements-openai.txt` to enable AGENT_PROVIDER=openai.
+-r requirements.txt
+
+openai-agents>=0.2,<1.0

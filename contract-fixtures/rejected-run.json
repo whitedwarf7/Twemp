@@ -1,0 +1,1196 @@
+{
+  "id": "INC-FIXTURE",
+  "incident": {
+    "title": "Checkout latency surge across EU region",
+    "description": "Checkout p95 latency climbed from 420 ms to 8.4 s shortly after the payment-router deployment. Error rate is 18% in eu-central and the retry queue continues to grow.",
+    "service": "payment-router",
+    "severity": "SEV-1",
+    "region": "eu-central",
+    "signals": [
+      "p95 latency 8.4 s (baseline 420 ms)",
+      "HTTP 5xx rate 18%",
+      "payment retry queue 4.7x above baseline"
+    ]
+  },
+  "mode": "demo",
+  "status": "rejected",
+  "phase": "rejected",
+  "startedAt": "2026-08-25T06:58:35.536Z",
+  "updatedAt": "2026-08-25T06:58:35.536Z",
+  "agents": [
+    {
+      "id": "incident-commander",
+      "name": "Incident Commander",
+      "shortName": "Commander",
+      "role": "main-orchestrator",
+      "team": "command",
+      "parentId": null,
+      "mission": "Maintain global incident state, coordinate team leads, and enforce the human approval boundary.",
+      "capabilities": [
+        "global synthesis",
+        "priority control",
+        "approval governance"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Remediation rejected; no changes executed",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "triage-lead",
+      "name": "Triage Orchestrator",
+      "shortName": "Triage",
+      "role": "sub-orchestrator",
+      "team": "triage",
+      "parentId": "incident-commander",
+      "mission": "Establish severity, scope, customer impact, and the first causal hypotheses.",
+      "capabilities": [
+        "scope control",
+        "signal correlation",
+        "severity assessment"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Scope confirmed; focused incident response is warranted",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "alert-correlator",
+      "name": "Alert Correlator",
+      "shortName": "Alerts",
+      "role": "specialist",
+      "team": "triage",
+      "parentId": "triage-lead",
+      "mission": "Cluster related alerts and establish a reliable incident onset window.",
+      "capabilities": [
+        "alert clustering",
+        "time-series alignment"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Three alert families share a single onset window",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "impact-analyst",
+      "name": "Impact Analyst",
+      "shortName": "Impact",
+      "role": "specialist",
+      "team": "triage",
+      "parentId": "triage-lead",
+      "mission": "Quantify affected journeys, regions, and customer cohorts.",
+      "capabilities": [
+        "impact modeling",
+        "severity scoring"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Customer checkout completion is materially degraded",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "change-intelligence",
+      "name": "Change Intelligence",
+      "shortName": "Changes",
+      "role": "specialist",
+      "team": "triage",
+      "parentId": "triage-lead",
+      "mission": "Correlate deployments, configuration changes, and feature flags with incident onset.",
+      "capabilities": [
+        "change correlation",
+        "release analysis"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Incident onset strongly correlates with the latest router release",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "investigation-lead",
+      "name": "Investigation Orchestrator",
+      "shortName": "Investigate",
+      "role": "sub-orchestrator",
+      "team": "investigation",
+      "parentId": "incident-commander",
+      "mission": "Direct evidence gathering and converge on the most defensible causal hypothesis.",
+      "capabilities": [
+        "hypothesis ranking",
+        "evidence synthesis",
+        "causal analysis"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Evidence converges on a connection lifecycle regression",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "telemetry-analyst",
+      "name": "Telemetry Analyst",
+      "shortName": "Metrics",
+      "role": "specialist",
+      "team": "investigation",
+      "parentId": "investigation-lead",
+      "mission": "Analyze golden signals, saturation, and regional metric divergence.",
+      "capabilities": [
+        "metrics analysis",
+        "anomaly detection"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Connection-pool saturation is driving latency amplification",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "log-investigator",
+      "name": "Log Investigator",
+      "shortName": "Logs",
+      "role": "specialist",
+      "team": "investigation",
+      "parentId": "investigation-lead",
+      "mission": "Extract high-value error patterns and trace them to code or configuration paths.",
+      "capabilities": [
+        "log clustering",
+        "trace analysis"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "New routing branch leaks gateway connections on timeout",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "dependency-mapper",
+      "name": "Dependency Mapper",
+      "shortName": "Dependencies",
+      "role": "specialist",
+      "team": "investigation",
+      "parentId": "investigation-lead",
+      "mission": "Map upstream and downstream health to isolate the failing boundary.",
+      "capabilities": [
+        "topology analysis",
+        "dependency health"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "External payment gateway is healthy; failure is at the client boundary",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "response-lead",
+      "name": "Response Orchestrator",
+      "shortName": "Response",
+      "role": "sub-orchestrator",
+      "team": "response",
+      "parentId": "incident-commander",
+      "mission": "Build a reversible mitigation plan and coordinate recovery after approval.",
+      "capabilities": [
+        "mitigation planning",
+        "risk control",
+        "recovery coordination"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Canary a rollback of payment-router in eu-central, expand only after golden signals recover, then drain queued retries at a controlled rate.",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "mitigation-strategist",
+      "name": "Mitigation Strategist",
+      "shortName": "Mitigation",
+      "role": "specialist",
+      "team": "response",
+      "parentId": "response-lead",
+      "mission": "Rank the fastest safe options for stopping customer impact.",
+      "capabilities": [
+        "option analysis",
+        "blast-radius reduction"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "A regional rollback is the fastest bounded mitigation",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "risk-reviewer",
+      "name": "Risk & Rollback Reviewer",
+      "shortName": "Risk",
+      "role": "specialist",
+      "team": "response",
+      "parentId": "response-lead",
+      "mission": "Challenge the proposed mitigation and define explicit rollback triggers.",
+      "capabilities": [
+        "risk review",
+        "rollback design"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Rollback risk is lower than continued customer impact",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "recovery-verifier",
+      "name": "Recovery Verifier",
+      "shortName": "Verify",
+      "role": "specialist",
+      "team": "response",
+      "parentId": "response-lead",
+      "mission": "Independently verify service recovery against predeclared checks.",
+      "capabilities": [
+        "SLO verification",
+        "regression detection"
+      ],
+      "status": "cancelled",
+      "currentTask": null,
+      "outputSummary": "Cancelled after plan rejection",
+      "startedAt": null,
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "communications-lead",
+      "name": "Communications Orchestrator",
+      "shortName": "Comms",
+      "role": "sub-orchestrator",
+      "team": "communications",
+      "parentId": "incident-commander",
+      "mission": "Keep a live record and deliver accurate, audience-specific updates.",
+      "capabilities": [
+        "message governance",
+        "timeline ownership",
+        "stakeholder alignment"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Incident record and stakeholder narrative are current",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "incident-scribe",
+      "name": "Incident Scribe",
+      "shortName": "Scribe",
+      "role": "specialist",
+      "team": "communications",
+      "parentId": "communications-lead",
+      "mission": "Maintain a factual, timestamped incident timeline and decision log.",
+      "capabilities": [
+        "timeline capture",
+        "decision logging"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Incident timeline and decision ledger are synchronized",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "stakeholder-liaison",
+      "name": "Stakeholder Liaison",
+      "shortName": "Liaison",
+      "role": "specialist",
+      "team": "communications",
+      "parentId": "communications-lead",
+      "mission": "Draft concise updates without leaking unverified technical claims.",
+      "capabilities": [
+        "status updates",
+        "audience translation"
+      ],
+      "status": "completed",
+      "currentTask": null,
+      "outputSummary": "Stakeholder update is ready for release",
+      "startedAt": "2026-08-25T06:58:35.536Z",
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    },
+    {
+      "id": "postmortem-analyst",
+      "name": "Postmortem Analyst",
+      "shortName": "Postmortem",
+      "role": "specialist",
+      "team": "communications",
+      "parentId": "communications-lead",
+      "mission": "Create a blameless causal summary and concrete follow-up actions.",
+      "capabilities": [
+        "causal narrative",
+        "follow-up design"
+      ],
+      "status": "cancelled",
+      "currentTask": null,
+      "outputSummary": "Cancelled after plan rejection",
+      "startedAt": null,
+      "completedAt": "2026-08-25T06:58:35.536Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "INC-FIXTURE-event-1",
+      "sequence": 1,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "workflow-started",
+      "phase": "intake",
+      "actorId": "incident-commander",
+      "actorName": "Incident Commander",
+      "team": "command",
+      "title": "SEV-1 command activated",
+      "detail": "Incident command opened for payment-router in eu-central. Four workstreams will report through one command node.",
+      "level": "critical"
+    },
+    {
+      "id": "INC-FIXTURE-event-2",
+      "sequence": 2,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "triage",
+      "actorId": "incident-commander",
+      "actorName": "Incident Commander",
+      "team": "command",
+      "title": "Command delegated to Triage",
+      "detail": "Correlate the incoming signals, confirm severity and impact, and identify changes near incident onset.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-3",
+      "sequence": 3,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "triage",
+      "actorId": "triage-lead",
+      "actorName": "Triage Orchestrator",
+      "team": "triage",
+      "title": "Triage \u2192 Alerts",
+      "detail": "Cluster related alerts and establish a reliable incident onset window.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-4",
+      "sequence": 4,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "agent-started",
+      "phase": "triage",
+      "actorId": "alert-correlator",
+      "actorName": "Alert Correlator",
+      "team": "triage",
+      "title": "Alerts started analysis",
+      "detail": "Cluster related alerts and establish a reliable incident onset window.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-5",
+      "sequence": 5,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "triage",
+      "actorId": "triage-lead",
+      "actorName": "Triage Orchestrator",
+      "team": "triage",
+      "title": "Triage \u2192 Impact",
+      "detail": "Quantify affected journeys, regions, and customer cohorts.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-6",
+      "sequence": 6,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "agent-started",
+      "phase": "triage",
+      "actorId": "impact-analyst",
+      "actorName": "Impact Analyst",
+      "team": "triage",
+      "title": "Impact started analysis",
+      "detail": "Quantify affected journeys, regions, and customer cohorts.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-7",
+      "sequence": 7,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "triage",
+      "actorId": "triage-lead",
+      "actorName": "Triage Orchestrator",
+      "team": "triage",
+      "title": "Triage \u2192 Changes",
+      "detail": "Correlate deployments, configuration changes, and feature flags with incident onset.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-8",
+      "sequence": 8,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "agent-started",
+      "phase": "triage",
+      "actorId": "change-intelligence",
+      "actorName": "Change Intelligence",
+      "team": "triage",
+      "title": "Changes started analysis",
+      "detail": "Correlate deployments, configuration changes, and feature flags with incident onset.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-9",
+      "sequence": 9,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "finding",
+      "phase": "triage",
+      "actorId": "alert-correlator",
+      "actorName": "Alert Correlator",
+      "team": "triage",
+      "title": "Three alert families share a single onset window",
+      "detail": "Latency, HTTP error, and queue-depth alerts for payment-router all changed within the same two-minute window, indicating one incident rather than independent failures.",
+      "level": "critical"
+    },
+    {
+      "id": "INC-FIXTURE-event-10",
+      "sequence": 10,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "finding",
+      "phase": "triage",
+      "actorId": "impact-analyst",
+      "actorName": "Impact Analyst",
+      "team": "triage",
+      "title": "Customer checkout completion is materially degraded",
+      "detail": "The eu-central checkout path is the primary affected journey. Elevated latency and retries imply both failed purchases and duplicate-attempt risk, supporting SEV-1 handling.",
+      "level": "critical"
+    },
+    {
+      "id": "INC-FIXTURE-event-11",
+      "sequence": 11,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "finding",
+      "phase": "triage",
+      "actorId": "change-intelligence",
+      "actorName": "Change Intelligence",
+      "team": "triage",
+      "title": "Incident onset strongly correlates with the latest router release",
+      "detail": "Release 2026.08.25.3 of payment-router reached eu-central six minutes before the first alert. No concurrent database or gateway configuration change was recorded.",
+      "level": "warning"
+    },
+    {
+      "id": "INC-FIXTURE-event-12",
+      "sequence": 12,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "synthesis",
+      "phase": "triage",
+      "actorId": "triage-lead",
+      "actorName": "Triage Orchestrator",
+      "team": "triage",
+      "title": "Scope confirmed; focused incident response is warranted",
+      "detail": "Prioritize the affected regional release path and preserve the current alert and deployment evidence.",
+      "level": "success"
+    },
+    {
+      "id": "INC-FIXTURE-event-13",
+      "sequence": 13,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "investigation",
+      "actorId": "incident-commander",
+      "actorName": "Incident Commander",
+      "team": "command",
+      "title": "Command delegated to Investigate",
+      "detail": "Gather independent metrics, log, and dependency evidence to rank causal hypotheses.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-14",
+      "sequence": 14,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "investigation",
+      "actorId": "investigation-lead",
+      "actorName": "Investigation Orchestrator",
+      "team": "investigation",
+      "title": "Investigate \u2192 Metrics",
+      "detail": "Analyze golden signals, saturation, and regional metric divergence.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-15",
+      "sequence": 15,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "agent-started",
+      "phase": "investigation",
+      "actorId": "telemetry-analyst",
+      "actorName": "Telemetry Analyst",
+      "team": "investigation",
+      "title": "Metrics started analysis",
+      "detail": "Analyze golden signals, saturation, and regional metric divergence.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-16",
+      "sequence": 16,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "investigation",
+      "actorId": "investigation-lead",
+      "actorName": "Investigation Orchestrator",
+      "team": "investigation",
+      "title": "Investigate \u2192 Logs",
+      "detail": "Extract high-value error patterns and trace them to code or configuration paths.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-17",
+      "sequence": 17,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "agent-started",
+      "phase": "investigation",
+      "actorId": "log-investigator",
+      "actorName": "Log Investigator",
+      "team": "investigation",
+      "title": "Logs started analysis",
+      "detail": "Extract high-value error patterns and trace them to code or configuration paths.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-18",
+      "sequence": 18,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "investigation",
+      "actorId": "investigation-lead",
+      "actorName": "Investigation Orchestrator",
+      "team": "investigation",
+      "title": "Investigate \u2192 Dependencies",
+      "detail": "Map upstream and downstream health to isolate the failing boundary.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-19",
+      "sequence": 19,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "agent-started",
+      "phase": "investigation",
+      "actorId": "dependency-mapper",
+      "actorName": "Dependency Mapper",
+      "team": "investigation",
+      "title": "Dependencies started analysis",
+      "detail": "Map upstream and downstream health to isolate the failing boundary.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-20",
+      "sequence": 20,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "finding",
+      "phase": "investigation",
+      "actorId": "telemetry-analyst",
+      "actorName": "Telemetry Analyst",
+      "team": "investigation",
+      "title": "Connection-pool saturation is driving latency amplification",
+      "detail": "payment-router instances in eu-central show pool utilization pinned above 97% while CPU and memory remain normal. Retry amplification explains the rising queue depth.",
+      "level": "critical"
+    },
+    {
+      "id": "INC-FIXTURE-event-21",
+      "sequence": 21,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "finding",
+      "phase": "investigation",
+      "actorId": "log-investigator",
+      "actorName": "Log Investigator",
+      "team": "investigation",
+      "title": "New routing branch leaks gateway connections on timeout",
+      "detail": "Logs from payment-router repeatedly pair upstream timeout messages with missing connection-release markers on the new v3 routing branch. The legacy branch closes connections correctly.",
+      "level": "critical"
+    },
+    {
+      "id": "INC-FIXTURE-event-22",
+      "sequence": 22,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "finding",
+      "phase": "investigation",
+      "actorId": "dependency-mapper",
+      "actorName": "Dependency Mapper",
+      "team": "investigation",
+      "title": "External payment gateway is healthy; failure is at the client boundary",
+      "detail": "The upstream gateway, checkout API, and database are healthy outside calls made by payment-router. The fault boundary is the router's connection lifecycle in eu-central.",
+      "level": "warning"
+    },
+    {
+      "id": "INC-FIXTURE-event-23",
+      "sequence": 23,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "synthesis",
+      "phase": "investigation",
+      "actorId": "investigation-lead",
+      "actorName": "Investigation Orchestrator",
+      "team": "investigation",
+      "title": "Evidence converges on a connection lifecycle regression",
+      "detail": "Treat the v3 timeout branch as the leading cause and prefer a reversible regional rollback over broad infrastructure changes.",
+      "level": "success"
+    },
+    {
+      "id": "INC-FIXTURE-event-24",
+      "sequence": 24,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "planning",
+      "actorId": "incident-commander",
+      "actorName": "Incident Commander",
+      "team": "command",
+      "title": "Command delegated to Response",
+      "detail": "Design the smallest reversible mitigation, challenge its risks, and declare rollback triggers.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-25",
+      "sequence": 25,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "planning",
+      "actorId": "response-lead",
+      "actorName": "Response Orchestrator",
+      "team": "response",
+      "title": "Response \u2192 Mitigation",
+      "detail": "Rank the fastest safe options for stopping customer impact.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-26",
+      "sequence": 26,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "agent-started",
+      "phase": "planning",
+      "actorId": "mitigation-strategist",
+      "actorName": "Mitigation Strategist",
+      "team": "response",
+      "title": "Mitigation started analysis",
+      "detail": "Rank the fastest safe options for stopping customer impact.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-27",
+      "sequence": 27,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "planning",
+      "actorId": "response-lead",
+      "actorName": "Response Orchestrator",
+      "team": "response",
+      "title": "Response \u2192 Risk",
+      "detail": "Challenge the proposed mitigation and define explicit rollback triggers.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-28",
+      "sequence": 28,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "agent-started",
+      "phase": "planning",
+      "actorId": "risk-reviewer",
+      "actorName": "Risk & Rollback Reviewer",
+      "team": "response",
+      "title": "Risk started analysis",
+      "detail": "Challenge the proposed mitigation and define explicit rollback triggers.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-29",
+      "sequence": 29,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "finding",
+      "phase": "planning",
+      "actorId": "mitigation-strategist",
+      "actorName": "Mitigation Strategist",
+      "team": "response",
+      "title": "A regional rollback is the fastest bounded mitigation",
+      "detail": "Rolling payment-router in eu-central back to the previous release removes the suspected path while containing change to the affected region. Queue recovery should wait for latency stabilization.",
+      "level": "warning"
+    },
+    {
+      "id": "INC-FIXTURE-event-30",
+      "sequence": 30,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "finding",
+      "phase": "planning",
+      "actorId": "risk-reviewer",
+      "actorName": "Risk & Rollback Reviewer",
+      "team": "response",
+      "title": "Rollback risk is lower than continued customer impact",
+      "detail": "The previous release is schema-compatible and the rollout can be stopped after the first canary. The main secondary risk is replaying the payment retry queue too quickly.",
+      "level": "warning"
+    },
+    {
+      "id": "INC-FIXTURE-event-31",
+      "sequence": 31,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "synthesis",
+      "phase": "planning",
+      "actorId": "response-lead",
+      "actorName": "Response Orchestrator",
+      "team": "response",
+      "title": "Reversible mitigation path prepared",
+      "detail": "Canary the previous release, expand only on healthy signals, then drain the retry queue at a capped rate.",
+      "level": "success"
+    },
+    {
+      "id": "INC-FIXTURE-event-32",
+      "sequence": 32,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "plan-ready",
+      "phase": "planning",
+      "actorId": "response-lead",
+      "actorName": "Response Orchestrator",
+      "team": "response",
+      "title": "Bounded remediation plan ready",
+      "detail": "3 reversible steps prepared with medium aggregate risk. No action has been executed.",
+      "level": "warning"
+    },
+    {
+      "id": "INC-FIXTURE-event-33",
+      "sequence": 33,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "planning",
+      "actorId": "incident-commander",
+      "actorName": "Incident Commander",
+      "team": "command",
+      "title": "Command delegated to Comms",
+      "detail": "Maintain a factual timeline and prepare a concise stakeholder update from confirmed evidence.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-34",
+      "sequence": 34,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "planning",
+      "actorId": "communications-lead",
+      "actorName": "Communications Orchestrator",
+      "team": "communications",
+      "title": "Comms \u2192 Scribe",
+      "detail": "Maintain a factual, timestamped incident timeline and decision log.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-35",
+      "sequence": 35,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "agent-started",
+      "phase": "planning",
+      "actorId": "incident-scribe",
+      "actorName": "Incident Scribe",
+      "team": "communications",
+      "title": "Scribe started analysis",
+      "detail": "Maintain a factual, timestamped incident timeline and decision log.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-36",
+      "sequence": 36,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "delegation",
+      "phase": "planning",
+      "actorId": "communications-lead",
+      "actorName": "Communications Orchestrator",
+      "team": "communications",
+      "title": "Comms \u2192 Liaison",
+      "detail": "Draft concise updates without leaking unverified technical claims.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-37",
+      "sequence": 37,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "agent-started",
+      "phase": "planning",
+      "actorId": "stakeholder-liaison",
+      "actorName": "Stakeholder Liaison",
+      "team": "communications",
+      "title": "Liaison started analysis",
+      "detail": "Draft concise updates without leaking unverified technical claims.",
+      "level": "neutral"
+    },
+    {
+      "id": "INC-FIXTURE-event-38",
+      "sequence": 38,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "finding",
+      "phase": "planning",
+      "actorId": "incident-scribe",
+      "actorName": "Incident Scribe",
+      "team": "communications",
+      "title": "Incident timeline and decision ledger are synchronized",
+      "detail": "The live record now captures alert onset, payment-router deployment timing, hypotheses, evidence, and the approval boundary. Unverified claims are labeled as hypotheses.",
+      "level": "success"
+    },
+    {
+      "id": "INC-FIXTURE-event-39",
+      "sequence": 39,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "finding",
+      "phase": "planning",
+      "actorId": "stakeholder-liaison",
+      "actorName": "Stakeholder Liaison",
+      "team": "communications",
+      "title": "Stakeholder update is ready for release",
+      "detail": "Draft: We are investigating elevated checkout latency in eu-central. The team has isolated the issue and prepared a bounded mitigation. No remediation will run before human approval.",
+      "level": "success"
+    },
+    {
+      "id": "INC-FIXTURE-event-40",
+      "sequence": 40,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "communication",
+      "phase": "planning",
+      "actorId": "communications-lead",
+      "actorName": "Communications Orchestrator",
+      "team": "communications",
+      "title": "Incident record and stakeholder narrative are current",
+      "detail": "Publish the impact-focused update now and issue a recovery update only after independent verification passes.",
+      "level": "success"
+    },
+    {
+      "id": "INC-FIXTURE-event-41",
+      "sequence": 41,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "approval-requested",
+      "phase": "approval",
+      "actorId": "incident-commander",
+      "actorName": "Incident Commander",
+      "team": "command",
+      "title": "Human approval required",
+      "detail": "The workflow is paused at the remediation boundary. Review blast radius, rollback criteria, and validation checks before deciding.",
+      "level": "warning"
+    },
+    {
+      "id": "INC-FIXTURE-event-42",
+      "sequence": 42,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "approval-rejected",
+      "phase": "rejected",
+      "actorId": "human-approver",
+      "actorName": "Incident commander",
+      "team": "command",
+      "title": "Remediation plan rejected",
+      "detail": "Too broad",
+      "level": "critical"
+    },
+    {
+      "id": "INC-FIXTURE-event-43",
+      "sequence": 43,
+      "timestamp": "2026-08-25T06:58:35.536Z",
+      "type": "communication",
+      "phase": "rejected",
+      "actorId": "stakeholder-liaison",
+      "actorName": "Stakeholder Liaison",
+      "team": "communications",
+      "title": "Decision recorded for stakeholders",
+      "detail": "The proposed mitigation was not approved. Incident state and evidence are retained for the next command decision.",
+      "level": "warning"
+    }
+  ],
+  "findings": [
+    {
+      "id": "INC-FIXTURE-finding-alert-correlator",
+      "agentId": "alert-correlator",
+      "team": "triage",
+      "headline": "Three alert families share a single onset window",
+      "detail": "Latency, HTTP error, and queue-depth alerts for payment-router all changed within the same two-minute window, indicating one incident rather than independent failures.",
+      "evidence": [
+        "First sustained breach observed in eu-central",
+        "p95 latency 8.4 s (baseline 420 ms)",
+        "HTTP 5xx rate 18%"
+      ],
+      "confidence": 0.96,
+      "severity": "critical"
+    },
+    {
+      "id": "INC-FIXTURE-finding-impact-analyst",
+      "agentId": "impact-analyst",
+      "team": "triage",
+      "headline": "Customer checkout completion is materially degraded",
+      "detail": "The eu-central checkout path is the primary affected journey. Elevated latency and retries imply both failed purchases and duplicate-attempt risk, supporting SEV-1 handling.",
+      "evidence": [
+        "Scope is concentrated in eu-central",
+        "Estimated checkout completion is 31% below the normal band",
+        "Other regions remain inside their error-budget burn thresholds"
+      ],
+      "confidence": 0.91,
+      "severity": "critical"
+    },
+    {
+      "id": "INC-FIXTURE-finding-change-intelligence",
+      "agentId": "change-intelligence",
+      "team": "triage",
+      "headline": "Incident onset strongly correlates with the latest router release",
+      "detail": "Release 2026.08.25.3 of payment-router reached eu-central six minutes before the first alert. No concurrent database or gateway configuration change was recorded.",
+      "evidence": [
+        "Release 2026.08.25.3 completed at 14:26 UTC",
+        "First alert fired at 14:32 UTC",
+        "Previous release has a known-good 24-hour baseline"
+      ],
+      "confidence": 0.94,
+      "severity": "warning"
+    },
+    {
+      "id": "INC-FIXTURE-finding-telemetry-analyst",
+      "agentId": "telemetry-analyst",
+      "team": "investigation",
+      "headline": "Connection-pool saturation is driving latency amplification",
+      "detail": "payment-router instances in eu-central show pool utilization pinned above 97% while CPU and memory remain normal. Retry amplification explains the rising queue depth.",
+      "evidence": [
+        "Gateway connection pool: 97-100% utilized",
+        "Application CPU: 41%; memory: 58%",
+        "Retry attempts per checkout increased from 1.1 to 3.8"
+      ],
+      "confidence": 0.93,
+      "severity": "critical"
+    },
+    {
+      "id": "INC-FIXTURE-finding-log-investigator",
+      "agentId": "log-investigator",
+      "team": "investigation",
+      "headline": "New routing branch leaks gateway connections on timeout",
+      "detail": "Logs from payment-router repeatedly pair upstream timeout messages with missing connection-release markers on the new v3 routing branch. The legacy branch closes connections correctly.",
+      "evidence": [
+        "PAYMENT_UPSTREAM_TIMEOUT increased 22x after deployment",
+        "releaseConnection marker absent on the v3 timeout path",
+        "Legacy v2 path retains a balanced acquire/release ratio"
+      ],
+      "confidence": 0.95,
+      "severity": "critical"
+    },
+    {
+      "id": "INC-FIXTURE-finding-dependency-mapper",
+      "agentId": "dependency-mapper",
+      "team": "investigation",
+      "headline": "External payment gateway is healthy; failure is at the client boundary",
+      "detail": "The upstream gateway, checkout API, and database are healthy outside calls made by payment-router. The fault boundary is the router's connection lifecycle in eu-central.",
+      "evidence": [
+        "Gateway synthetic probes remain below 180 ms",
+        "Database query p95 remains below 24 ms",
+        "Only v3 router instances show elevated open connections"
+      ],
+      "confidence": 0.92,
+      "severity": "warning"
+    },
+    {
+      "id": "INC-FIXTURE-finding-mitigation-strategist",
+      "agentId": "mitigation-strategist",
+      "team": "response",
+      "headline": "A regional rollback is the fastest bounded mitigation",
+      "detail": "Rolling payment-router in eu-central back to the previous release removes the suspected path while containing change to the affected region. Queue recovery should wait for latency stabilization.",
+      "evidence": [
+        "Previous release artifact passed current smoke tests",
+        "Regional deployment supports one-click rollback",
+        "Traffic shifting alone would move retry pressure downstream"
+      ],
+      "confidence": 0.9,
+      "severity": "warning"
+    },
+    {
+      "id": "INC-FIXTURE-finding-risk-reviewer",
+      "agentId": "risk-reviewer",
+      "team": "response",
+      "headline": "Rollback risk is lower than continued customer impact",
+      "detail": "The previous release is schema-compatible and the rollout can be stopped after the first canary. The main secondary risk is replaying the payment retry queue too quickly.",
+      "evidence": [
+        "No database migration accompanied the release",
+        "Rollback canary limits initial exposure to 5% of instances",
+        "Queue drain supports a configurable transactions-per-second cap"
+      ],
+      "confidence": 0.89,
+      "severity": "warning"
+    },
+    {
+      "id": "INC-FIXTURE-finding-incident-scribe",
+      "agentId": "incident-scribe",
+      "team": "communications",
+      "headline": "Incident timeline and decision ledger are synchronized",
+      "detail": "The live record now captures alert onset, payment-router deployment timing, hypotheses, evidence, and the approval boundary. Unverified claims are labeled as hypotheses.",
+      "evidence": [
+        "14:26 UTC - release completed",
+        "14:32 UTC - first sustained SLO breach",
+        "14:38 UTC - incident command workflow activated"
+      ],
+      "confidence": 0.98,
+      "severity": "info"
+    },
+    {
+      "id": "INC-FIXTURE-finding-stakeholder-liaison",
+      "agentId": "stakeholder-liaison",
+      "team": "communications",
+      "headline": "Stakeholder update is ready for release",
+      "detail": "Draft: We are investigating elevated checkout latency in eu-central. The team has isolated the issue and prepared a bounded mitigation. No remediation will run before human approval.",
+      "evidence": [
+        "Message states confirmed customer impact only",
+        "No speculative root cause is presented as fact",
+        "Next update target is 20 minutes"
+      ],
+      "confidence": 0.97,
+      "severity": "info"
+    }
+  ],
+  "teamReports": [
+    {
+      "id": "INC-FIXTURE-report-triage",
+      "orchestratorId": "triage-lead",
+      "team": "triage",
+      "title": "Scope confirmed; focused incident response is warranted",
+      "summary": "Three alert families share a single onset window Customer checkout completion is materially degraded Incident onset strongly correlates with the latest router release",
+      "keyFindings": [
+        "Three alert families share a single onset window",
+        "Customer checkout completion is materially degraded",
+        "Incident onset strongly correlates with the latest router release"
+      ],
+      "recommendation": "Prioritize the affected regional release path and preserve the current alert and deployment evidence.",
+      "confidence": 0.94
+    },
+    {
+      "id": "INC-FIXTURE-report-investigation",
+      "orchestratorId": "investigation-lead",
+      "team": "investigation",
+      "title": "Evidence converges on a connection lifecycle regression",
+      "summary": "Connection-pool saturation is driving latency amplification New routing branch leaks gateway connections on timeout External payment gateway is healthy; failure is at the client boundary",
+      "keyFindings": [
+        "Connection-pool saturation is driving latency amplification",
+        "New routing branch leaks gateway connections on timeout",
+        "External payment gateway is healthy; failure is at the client boundary"
+      ],
+      "recommendation": "Treat the v3 timeout branch as the leading cause and prefer a reversible regional rollback over broad infrastructure changes.",
+      "confidence": 0.93
+    },
+    {
+      "id": "INC-FIXTURE-report-response",
+      "orchestratorId": "response-lead",
+      "team": "response",
+      "title": "Reversible mitigation path prepared",
+      "summary": "A regional rollback is the fastest bounded mitigation Rollback risk is lower than continued customer impact",
+      "keyFindings": [
+        "A regional rollback is the fastest bounded mitigation",
+        "Rollback risk is lower than continued customer impact"
+      ],
+      "recommendation": "Canary the previous release, expand only on healthy signals, then drain the retry queue at a capped rate.",
+      "confidence": 0.9
+    },
+    {
+      "id": "INC-FIXTURE-report-communications",
+      "orchestratorId": "communications-lead",
+      "team": "communications",
+      "title": "Incident record and stakeholder narrative are current",
+      "summary": "Incident timeline and decision ledger are synchronized Stakeholder update is ready for release",
+      "keyFindings": [
+        "Incident timeline and decision ledger are synchronized",
+        "Stakeholder update is ready for release"
+      ],
+      "recommendation": "Publish the impact-focused update now and issue a recovery update only after independent verification passes.",
+      "confidence": 0.97
+    }
+  ],
+  "plan": {
+    "id": "INC-FIXTURE-plan-1",
+    "hypothesis": "Release 2026.08.25.3 introduced a missing connection-release path after upstream timeouts, saturating the regional gateway pool and amplifying retries.",
+    "summary": "Canary a rollback of payment-router in eu-central, expand only after golden signals recover, then drain queued retries at a controlled rate.",
+    "riskLevel": "medium",
+    "blastRadius": "Only payment-router instances in eu-central; start with a 5% canary.",
+    "actions": [
+      {
+        "id": "action-freeze",
+        "title": "Freeze regional changes and preserve evidence",
+        "detail": "Pause unrelated deployments in the affected region and capture current release, metric, and error-pattern references.",
+        "ownerAgentId": "response-lead",
+        "risk": "low",
+        "reversible": true,
+        "expectedSignal": "No additional configuration drift during mitigation"
+      },
+      {
+        "id": "action-rollback",
+        "title": "Canary rollback to release 2026.08.24.7",
+        "detail": "Roll back 5% of regional instances, observe for five minutes, and expand only if latency and pool saturation improve.",
+        "ownerAgentId": "mitigation-strategist",
+        "risk": "medium",
+        "reversible": true,
+        "expectedSignal": "p95 latency below 800 ms and pool utilization below 70%"
+      },
+      {
+        "id": "action-queue",
+        "title": "Drain the payment retry queue",
+        "detail": "After service metrics stabilize, replay queued work at 20% of normal throughput with duplicate-payment protection enabled.",
+        "ownerAgentId": "risk-reviewer",
+        "risk": "medium",
+        "reversible": true,
+        "expectedSignal": "Queue depth declines without renewed latency or duplicate attempts"
+      }
+    ],
+    "rollback": "Stop expansion immediately if canary error rate exceeds 2%, restore release 2026.08.25.3, and isolate the region behind the existing traffic-shift control.",
+    "validationChecks": [
+      "Checkout p95 latency remains below 800 ms for ten minutes",
+      "HTTP 5xx rate remains below 1%",
+      "Connection-pool utilization remains below 70%",
+      "Retry queue declines monotonically without duplicate-payment alerts"
+    ]
+  },
+  "approval": {
+    "id": "INC-FIXTURE-approval-1",
+    "status": "rejected",
+    "requestedAt": "2026-08-25T06:58:35.536Z",
+    "decidedAt": "2026-08-25T06:58:35.536Z",
+    "decidedBy": "Incident commander",
+    "note": "Too broad",
+    "plan": {
+      "id": "INC-FIXTURE-plan-1",
+      "hypothesis": "Release 2026.08.25.3 introduced a missing connection-release path after upstream timeouts, saturating the regional gateway pool and amplifying retries.",
+      "summary": "Canary a rollback of payment-router in eu-central, expand only after golden signals recover, then drain queued retries at a controlled rate.",
+      "riskLevel": "medium",
+      "blastRadius": "Only payment-router instances in eu-central; start with a 5% canary.",
+      "actions": [
+        {
+          "id": "action-freeze",
+          "title": "Freeze regional changes and preserve evidence",
+          "detail": "Pause unrelated deployments in the affected region and capture current release, metric, and error-pattern references.",
+          "ownerAgentId": "response-lead",
+          "risk": "low",
+          "reversible": true,
+          "expectedSignal": "No additional configuration drift during mitigation"
+        },
+        {
+          "id": "action-rollback",
+          "title": "Canary rollback to release 2026.08.24.7",
+          "detail": "Roll back 5% of regional instances, observe for five minutes, and expand only if latency and pool saturation improve.",
+          "ownerAgentId": "mitigation-strategist",
+          "risk": "medium",
+          "reversible": true,
+          "expectedSignal": "p95 latency below 800 ms and pool utilization below 70%"
+        },
+        {
+          "id": "action-queue",
+          "title": "Drain the payment retry queue",
+          "detail": "After service metrics stabilize, replay queued work at 20% of normal throughput with duplicate-payment protection enabled.",
+          "ownerAgentId": "risk-reviewer",
+          "risk": "medium",
+          "reversible": true,
+          "expectedSignal": "Queue depth declines without renewed latency or duplicate attempts"
+        }
+      ],
+      "rollback": "Stop expansion immediately if canary error rate exceeds 2%, restore release 2026.08.25.3, and isolate the region behind the existing traffic-shift control.",
+      "validationChecks": [
+        "Checkout p95 latency remains below 800 ms for ten minutes",
+        "HTTP 5xx rate remains below 1%",
+        "Connection-pool utilization remains below 70%",
+        "Retry queue declines monotonically without duplicate-payment alerts"
+      ]
+    }
+  },
+  "verification": null,
+  "outcome": null,
+  "metrics": {
+    "agentsTotal": 17,
+    "agentsCompleted": 15,
+    "activeAgents": 0,
+    "tasksCompleted": 15,
+    "handoffs": 14,
+    "confidence": 0.93
+  }
+}

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #07100e;
+  --foreground: #eefbf6;
 }
 
 @theme inline {
@@ -12,15 +12,119 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--background);
+  color-scheme: dark;
 }
 
 body {
+  min-height: 100vh;
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center top;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+::selection {
+  background: rgba(110, 231, 183, 0.22);
+  color: #ffffff;
+}
+
+.twemp-panel {
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 1rem;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.027), rgba(255, 255, 255, 0.012)),
+    rgba(8, 18, 16, 0.82);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.14);
+}
+
+.twemp-input {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  border-radius: 0.625rem;
+  outline: none;
+  background: rgba(255, 255, 255, 0.028);
+  padding: 0.7rem 0.75rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.75rem;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.twemp-input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.twemp-input:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.twemp-input:focus {
+  border-color: rgba(110, 231, 183, 0.38);
+  background: rgba(110, 231, 183, 0.035);
+  box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.055);
+}
+
+.twemp-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.twemp-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.twemp-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@keyframes twemp-event-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.twemp-event-enter {
+  opacity: 0;
+  animation: twemp-event-enter 360ms ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

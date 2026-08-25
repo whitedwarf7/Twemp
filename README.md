@@ -1,36 +1,203 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Twemp
 
-## Getting Started
+Twemp is a hierarchical multi-agent incident-response command center. One Incident Commander coordinates four sub-orchestrators and twelve specialist agents, while deterministic application code controls phase transitions, concurrency, validation, and human approval.
 
-First, run the development server:
+The system is split into two services:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **`backend/`** - FastAPI (Python) owns the workflow engine, agent providers, validation, and state.
+- **`src/`** - Next.js renders the command center and calls the backend over HTTP.
+
+The reference workflow is safe to run without credentials: it defaults to a deterministic payment incident and records remediation as a simulation only.
+
+## What it demonstrates
+
+- 1 main orchestrator, 4 sub-orchestrators, and 12 specialist agents
+- parallel specialist fan-out (`asyncio.gather`) with team-level synthesis
+- provider-neutral reasoning through a typed `AgentProvider` protocol
+- deterministic demo mode and an opt-in OpenAI Agents SDK provider
+- Pydantic validation on the server and Zod validation at the client boundary
+- an explicit human approval gate before remediation
+- independent recovery verification and post-incident follow-up
+- an ordered, inspectable workflow event ledger
+- a responsive incident command interface
+
+## Workflow
+
+1. **Triage:** correlate alerts, assess impact, and inspect recent changes.
+2. **Investigation:** analyze telemetry, logs, and service dependencies.
+3. **Planning:** rank mitigations, challenge risk, and build a reversible plan.
+4. **Communications:** maintain the timeline and prepare stakeholder messaging.
+5. **Approval:** pause all downstream work until a human approves or rejects.
+6. **Remediation:** record only the approved steps as controlled simulations.
+7. **Verification:** independently test the declared recovery criteria.
+8. **Resolution:** prepare a blameless outcome and prevention work.
+
+See `docs/research.md` for the research decisions and `docs/architecture.md` for diagrams, safety properties, and production extension guidance.
+
+## Technology
+
+- FastAPI, Pydantic v2, and Uvicorn
+- pytest, Ruff, and mypy
+- Next.js App Router and React
+- strict TypeScript, Tailwind CSS, and Zod
+- OpenAI Agents SDK for Python (optional provider)
+
+## Run locally
+
+Requirements: Python 3.11+ and Node.js 20.9+.
+
+**Terminal 1 - backend**
+
+```powershell
+cd backend
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+On macOS or Linux use `.venv/bin/python` instead of `.\.venv\Scripts\python.exe`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Terminal 2 - frontend**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+Open `http://localhost:3000`, review the prefilled incident, and activate the workflow. The app stops at the approval panel. Approval continues through simulated remediation, verification, and resolution; rejection records the decision without remediation.
 
-To learn more about Next.js, take a look at the following resources:
+Interactive API docs are available at `http://127.0.0.1:8000/docs`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Provider configuration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+No environment file is needed for deterministic demo mode.
 
-## Deploy on Vercel
+To opt into live model reasoning, install the optional dependency and create `backend/.env`:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```powershell
+cd backend
+.\.venv\Scripts\python.exe -m pip install -r requirements-openai.txt
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```dotenv
+AGENT_PROVIDER=openai
+OPENAI_API_KEY=replace-with-a-server-side-key
+OPENAI_MODEL=gpt-5.4
+OPENAI_AGENTS_TRACING=false
+```
+
+The API key stays in the backend process and is never exposed to the browser. Tracing is opt-in and sensitive trace payload capture remains disabled in code.
+
+The OpenAI provider changes reasoning only. This repository intentionally exposes no production remediation tool, shell, deployment API, or infrastructure credential to any agent.
+
+## Tests
+
+| Suite | Location | Covers |
+| --- | --- | --- |
+| Backend | `backend/tests/` | schema constraints, agent hierarchy, orchestration, approval gate, fail-closed paths, secret guard, repository, settings, providers, HTTP contract |
+| Frontend | `src/lib/**/*.test.ts` | client-side contract mirror and the typed API client |
+| Cross-language | `contract-fixtures/` | real engine output validated by both Pydantic and Zod |
+
+`contract-fixtures/` holds runs generated by the FastAPI engine and is consumed by both test
+suites, so a backend contract change cannot silently break the UI. Regenerate them after any
+intentional contract change:
+
+```powershell
+cd backend
+.\.venv\Scripts\python.exe scripts\export_contract_fixtures.py
+```
+
+## Commands
+
+### Backend (from `backend/`)
+
+| Command | Purpose |
+| --- | --- |
+| `python -m uvicorn app.main:app --reload` | Start the API with reload |
+| `python -m pytest` | Run the workflow and API tests |
+| `python -m ruff check .` | Lint |
+| `python -m ruff format --check .` | Verify formatting |
+| `python -m mypy` | Strict type checks |
+
+### Frontend (from the repository root)
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the local development server |
+| `npm run lint` | Run ESLint with zero warnings allowed |
+| `npm run typecheck` | Run strict TypeScript checks |
+| `npm test` | Run the client-side tests |
+| `npm run build` | Create a production build |
+| `npm run validate` | Run lint, typecheck, tests, and build |
+
+## API
+
+All endpoints are served by the FastAPI backend.
+
+### `POST /api/workflows`
+
+Creates a run and executes through the approval boundary. Returns `201`.
+
+```json
+{
+  "title": "Checkout latency surge across EU region",
+  "description": "Checkout p95 latency climbed shortly after a regional router release.",
+  "service": "payment-router",
+  "severity": "SEV-1",
+  "region": "eu-central",
+  "signals": ["p95 latency 8.4 s", "HTTP 5xx rate 18%"]
+}
+```
+
+### `GET /api/workflows/{run_id}`
+
+Returns a previously created run.
+
+### `POST /api/workflows/{run_id}/decision`
+
+Records the one pending human decision and either stops or resumes the run. Deciding an already-settled approval returns `409`.
+
+```json
+{
+  "decision": "approve",
+  "reviewer": "Primary on-call",
+  "note": "Blast radius and rollback reviewed"
+}
+```
+
+## Project structure
+
+```text
+backend/
+  app/
+    main.py                FastAPI app factory and error contract
+    config.py              Environment-driven settings
+    api/routes.py          Workflow endpoints
+    workflow/
+      schemas.py           Pydantic contract (source of truth)
+      catalog.py           17-agent hierarchy
+      engine.py            Orchestration and approval gate
+      provider.py          Reasoning protocol
+      demo_provider.py     Deterministic implementation
+      openai_provider.py   Opt-in OpenAI Agents SDK implementation
+      repository.py        Bounded run store
+      security.py          Secret-like content guard
+  scripts/                 Contract fixture export and manual smoke check
+  tests/                   pytest suite
+contract-fixtures/         Shared backend/frontend contract fixtures
+src/
+  components/              Incident command interface
+  lib/api-client.ts        Typed backend client
+  lib/workflow/schemas.ts  Client-side contract mirror
+	architecture.md          Flow diagrams and production guidance
+```
+
+## Reference-app boundaries
+
+- Run storage is in-memory and process-local.
+- Authentication and approver authorization are not included.
+- Remediation events are simulations, not infrastructure actions.
+- Demo evidence is synthetic and must not be treated as real telemetry.
+- A production deployment needs durable state, transactional decisions, idempotency, audited tool adapters, real evidence connectors, provider timeouts, and evals.
+
+These limitations are deliberate: the project demonstrates safe hierarchical orchestration without pretending that a UI demo is ready to operate production systems.
